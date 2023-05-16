@@ -70,19 +70,23 @@ class _BottomNavigationBarExampleState
         backgroundColor: const Color(0xff181423),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/gym.png', width: 30, height: 30,),
+            icon: Image.asset('assets/icons/icon_deombell_grey.png', width: 30, height: 30,),
+            activeIcon: Image.asset('assets/icons/icon_deombell_white.png', width: 30, height: 30,),
             label: 'Exercise',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Image.asset('assets/icons/icon_home_grey.png', width: 25, height: 25,),
+            activeIcon: Image.asset('assets/icons/icon_home_white.png', width: 25, height: 25,),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/dialog.png', width: 30, height: 30,),
+            icon: Image.asset('assets/icons/icon_community_grey.png', width: 30, height: 30,),
+            activeIcon: Image.asset('assets/icons/icon_community_white.png', width: 30, height: 30,),
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/icons/user.png', width: 30, height: 30,),
+            icon: Image.asset('assets/icons/icon_user_grey.png', width: 28, height: 28,),
+            activeIcon: Image.asset('assets/icons/icon_user_white.png', width: 28, height: 28,),
             label: 'My'
           )
         ],
