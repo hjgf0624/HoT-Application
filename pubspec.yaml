@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.2.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -67,7 +68,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/Hot.png
+    - assets/images/HoT_Splash.png
+    - assets/images/HoT_main.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -84,7 +86,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Prismakers
+      fonts:
+      - asset: assets/fonts/Prismakers-Regular.ttf
+        weight: 700
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
