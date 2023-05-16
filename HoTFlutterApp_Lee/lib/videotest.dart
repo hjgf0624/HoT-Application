@@ -13,6 +13,7 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late ChewieController _chewieController;
+  late VideoPlayerController videoPlayerController;
 
   @override
   void initState() {
@@ -25,13 +26,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void dispose() {
     super.dispose();
-
+    videoPlayerController.dispose();
     // 컨트롤러를 해제합니다.
     _chewieController.dispose();
   }
 
   void _initializeVideoPlayer() {
-    VideoPlayerController videoPlayerController =
+    videoPlayerController =
     VideoPlayerController.network(widget.videoUrl);
 
     // ChewieController를 초기화합니다.

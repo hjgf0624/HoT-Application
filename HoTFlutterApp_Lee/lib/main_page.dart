@@ -47,6 +47,10 @@ class _BottomNavigationBarExampleState
       'Index 2: School',
       style: optionStyle,
     ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -62,20 +66,25 @@ class _BottomNavigationBarExampleState
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff181423),
-        items: const <BottomNavigationBarItem>[
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xff181423),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Image.asset('assets/icons/gym.png', width: 30, height: 30,),
+            label: 'Exercise',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Image.asset('assets/icons/dialog.png', width: 30, height: 30,),
+            label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
+            icon: Image.asset('assets/icons/user.png', width: 30, height: 30,),
+            label: 'My'
+          )
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
