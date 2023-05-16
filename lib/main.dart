@@ -65,13 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Container(
+            alignment: Alignment.center,
            // width: size.width,
            // height: size.height,
            // decoration: BoxDecoration(
            //   color: Color.fromARGB(255, 24, 20, 35) ),
             child: Column(
               children: [
-                SizedBox(height: size.height*0.2,),
+                SizedBox(height: size.height*0.04,),
                 Text('HoT',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -90,49 +91,135 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
                 SizedBox(height: size.height*0.04,),
 
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  controller: _email,
-                  decoration: InputDecoration(
-                    labelText: '아이디',
-                    labelStyle: TextStyle(color: Colors.white),
-                    hintText: '아이디를 입력하세요',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)
-                    )
-                  ),
-
-                validator: (value){
-                  if(value==null||value.isEmpty){
-                    return '아이디를 입력하세요.';
-                  }
-                },
-              ),
-                SizedBox(height: size.height*0.02,),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  controller: _password,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: '비밀번호',
-                    labelStyle: TextStyle(color: Colors.white),
-                    hintText: '비밀번호를 입력하세요.',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                      borderRadius : BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                        width: 10,
+                Container(
+                  width: size.width*0.8,
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    controller: _email,
+                    decoration: InputDecoration(
+                      labelText: '아이디',
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintText: '아이디를 입력하세요',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1,
+                        )
                       )
-                    )
-                  ),
-                  validator: (value){
+                    ),
+
+                    validator: (value){
                     if(value==null||value.isEmpty){
-                      return '비밀번호를 입력하세요.';
-                    }
-                  },
-                )
+                      return '아이디를 입력하세요.';
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: size.height*0.02,),
+                Container(
+                  width: size.width*0.8,
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    controller: _password,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: '비밀번호',
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintText: '비밀번호를 입력하세요.',
+                      hintStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius : BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1,
+                        )
+                      )
+                    ),
+                    validator: (value){
+                      if(value==null||value.isEmpty){
+                        return '비밀번호를 입력하세요.';
+                      }
+                    },
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 16),
+                  child: OutlinedButton(
+                      onPressed: (){
+                      if(_formKey.currentState!.validate()){
+                        signINto();
+                      }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        backgroundColor: Colors.white,
+                        minimumSize: Size(size.width*0.8, size.height*0.1)
+                      ),
+                      child: Text(
+                          '로그인',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                      ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 16),
+                  child: OutlinedButton(
+                    onPressed: (){
+                      if(_formKey.currentState!.validate()){
+                        signINto();
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        backgroundColor: Colors.yellow,
+                        minimumSize: Size(size.width*0.8, size.height*0.1)
+                    ),
+                    child: Text(
+                      '카카오톡으로 로그인',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height*0.02,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Text(
+                          '회원가입',
+                        style: TextStyle(
+                          color: Colors.blue
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+
+                        },
+                        child: Text(
+                            '아이디/비밀번호 찾기',
+                          style: TextStyle(
+                            color: Colors.blue
+                          ),
+                        ),
+                    ),
+                  ],
+                ),
               ],
             ),
           )

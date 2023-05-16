@@ -15,6 +15,9 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _name= new TextEditingController();
   TextEditingController _email= new TextEditingController();
   TextEditingController _password= new TextEditingController();
+  TextEditingController _passwordConfirm= new TextEditingController();
+  TextEditingController _phoneNum= new TextEditingController();
+  TextEditingController _authNum= new TextEditingController();
 
   Future<void> signup() async{
     try{
@@ -30,12 +33,13 @@ class _SignUpState extends State<SignUp> {
     Size size=MediaQuery.of(context).size;
     return Scaffold(
         body: Container(
+          alignment: Alignment.center,
           margin: EdgeInsets.only(top: size.height*0.03,left: size.height*0.04,right: size.height*0.04,),
           child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  Text('회원가입 페이지',
+                  Text('회원가입',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20
