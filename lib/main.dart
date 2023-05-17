@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
     } catch(e, stackTrace){
       print('예외 발생: $e');
+      print('스택 트레이스 : $stackTrace');
       // logger.e('오류 발생: $e', e, stackTrace);
     }
   }
@@ -71,12 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Container(
-            alignment: Alignment.center,
-           // width: size.width,
-           // height: size.height,
-           // decoration: BoxDecoration(
-           //   color: Color.fromARGB(255, 24, 20, 35) ),
+          body: Form(
+            key: _formKey,
             child: Column(
               children: [
                 SizedBox(height: size.height*0.04,),
@@ -97,7 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
                 SizedBox(height: size.height*0.04,),
-
                 Container(
                   width: size.width*0.8,
                   child: TextFormField(
@@ -155,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: const EdgeInsets.only(top: 16),
                   child: TextButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState !=null && _formKey.currentState!.validate()) {
                         signin();
                       }
                     },
