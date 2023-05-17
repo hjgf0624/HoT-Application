@@ -50,8 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> signin() async{
     try{
-      TextEditingController _email = TextEditingController();
-      TextEditingController _password = TextEditingController();
       print('로그인 버튼 클릭');
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text,
