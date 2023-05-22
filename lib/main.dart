@@ -44,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   
-  void signINto(){
-    Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
-  }
+  // void signINto(){
+  //   Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
+  // }
 
   Future<void> signin() async{
     try{
