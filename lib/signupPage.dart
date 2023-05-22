@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
   bool isVerificationSuccessful = false;
   bool isEmailDuplicated = false;
   bool isEmailChecked = false;
-  bool passwordMatch = false;
+  bool passwordMatch = true;
 
 
   String formatPhoneNumber(String phoneNumber) { // 휴대폰번호를 국가번호로 바꿔주는 메소드
@@ -143,68 +143,65 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
 
-                  SizedBox(height: size.height*0.03,),
+                  SizedBox(height: size.height*0.05,),
                   Stack(
                     children: [
-                      TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
+                      FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
                             labelText: '이메일',
                             labelStyle: const TextStyle(color: Colors.white),
                             hintText: '이메일 입력',
                             hintStyle: const TextStyle(color: Colors.white),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: const BorderSide(
-                                  color:  Colors.white,
-                                  width: 1,
-                                  // style: BorderStyle.solid
-                                )
-                            )
-                        ),
-                        controller: _email,
-                        validator: (value) {
-                          if(value==null||value.isEmpty){
-                            return '이메일을 입력해 주세요.';
-                          }
-                        },
-                      ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: SizedBox(
-                            height: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async{
-                                bool isDuplicated = await checkEmailDuplication(_email.text);
-                                setState(() {
-                                  isEmailDuplicated = isDuplicated;
-                                  isEmailChecked = true;
-                                });
-                              },
-                              child: const Text('이메일 중복체크'),
-                            ),
-                        ),
-                      ),
-                      if(isEmailChecked && isEmailDuplicated)
-                          SizedBox(
-                            width: size.width,
-                            child: Positioned(
-                              top: 1,
-                              right: size.width * 0.3,
-                              child: const Text(
-                                '중복된 이메일입니다.',
-                                style: TextStyle(color: Colors.red),
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1,
                               ),
                             ),
                           ),
-                      if(isEmailChecked && !isEmailDuplicated)
-                        SizedBox(
-                          width: size.width,
-                          child: Positioned(
-                            top: 1,
-                            right: size.width * 0.7,
+                          controller: _email,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '이메일을 입력해 주세요.';
+                            }
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            bool isDuplicated = await checkEmailDuplication(_email.text);
+                            setState(() {
+                              isEmailDuplicated = isDuplicated;
+                              isEmailChecked = true;
+                            });
+                          },
+                          child: const Text('이메일 중복체크'),
+                        ),
+                      ),
+                      if (isEmailChecked && isEmailDuplicated)
+                        Positioned(
+                          top: 15,
+                          left: 830,
+                          child: Container(
+                            child: const Text(
+                              '중복된 이메일입니다.',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                      if (isEmailChecked && !isEmailDuplicated)
+                        Positioned(
+                          top: 15,
+                          left: 810,
+                          child: Container(
                             child: const Text(
                               '사용 가능한 이메일입니다.',
                               style: TextStyle(color: Colors.green),
@@ -246,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                         labelStyle: const TextStyle(color: Colors.white),
                         hintText: '비밀번호 재입력',
                         hintStyle: const TextStyle(color: Colors.white),
-                        errorText: passwordMatch ? null : '비밀번호가 일치하지 않습니다',
+                        // errorText: passwordMatch ? null : '비밀번호가 일치하지 않습니다',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(
@@ -272,15 +269,15 @@ class _SignUpState extends State<SignUp> {
                       }
                     },
                   ),
-                  if(passwordMatch)
-                    const Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Text(
-                        '비밀번호가 일치합니다.',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ),
+                  // if(passwordMatch)
+                  //   const Positioned(
+                  //     top: 0,
+                  //     left: 0,
+                  //     child: Text(
+                  //       '비밀번호가 일치합니다.',
+                  //       style: TextStyle(color: Colors.green),
+                  //     ),
+                  //   ),
                   SizedBox(height: size.height*0.03,),
                   TextFormField(
                     style: const TextStyle(color: Colors.white,),
