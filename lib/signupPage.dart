@@ -30,6 +30,7 @@ class _SignUpState extends State<SignUp> {
 
   late String verificationId; // 인증번호, 초기화는 인증번호를 발급받은 뒤에 해 주기 때문에 late
 
+  // 회원가입 전, 체크해야 할 항목들 [인증번호 확인, 이메일 중복여부, 이메일 중복체크, 비밀번호 확인]
   bool isVerificationSuccessful = false;
   bool isEmailDuplicated = false;
   bool isEmailChecked = false;
@@ -113,7 +114,6 @@ class _SignUpState extends State<SignUp> {
         String userId = userCredential.user!.uid;
         firebase_service.UserInfo userInfo= firebase_service.UserInfo(
             email: _email.text,
-            password: _password.text,
             name: _name.text,
             phoneNum: _phoneNum.text);
 
@@ -134,8 +134,6 @@ class _SignUpState extends State<SignUp> {
     Size size=MediaQuery.of(context).size;
     return Scaffold(
         body: SingleChildScrollView(
-          // alignment: Alignment.center,
-          // margin: EdgeInsets.only(top: size.height*0.03,left: size.height*0.04,right: size.height*0.04,),
           child: Form(
               key: _formKey,
               child: Column(

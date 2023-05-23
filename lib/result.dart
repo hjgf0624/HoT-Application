@@ -5,11 +5,13 @@ class Result extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(child: Text('메인 페이지'),),
-      ),
-    );
-
+    return const Scaffold(
+      body: Center(
+          child: Text(
+            '메인 페이지',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
   }
 }

@@ -1,16 +1,29 @@
 import 'package:capstone_project/resetPassword.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './signupPage.dart';
 import './result.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:logger/logger.dart';
 import 'firebase_options.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk_user/src/model/user.dart' as KakaoUser;
+
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options:
   DefaultFirebaseOptions.currentPlatform);
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+    androidProvider: AndroidProvider.debug
+  );
+  KakaoSdk.init(
+      nativeAppKey: 'c1de913802f912339a8a3ade2cebe670',
+      javaScriptAppKey: 'b06764f4a0759c738492c42e601e2a44'
+  );
   runApp(const MyApp());
 }
 
@@ -45,16 +58,51 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
+  Future<void> signinWithKakao() async{
+
+    if (await isKakaoTalkInstalled()) {
+      try {
+        print('카카오톡으로 로그인 성공');
+        UserApi.instance.loginWithKakaoTalk();
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
+      } catch (error) {
+        print('카카오톡으로 로그인 실패 $error');
+
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return;
+        }
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+        try {
+          print('카카오계정으로 로그인 성공');
+          UserApi.instance.loginWithKakaoAccount();
+
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
+        } catch (error) {
+          print('카카오계정으로 로그인 실패 $error');
+        }
+      }
+    } else {
+      try {
+        print('카카오계정으로 로그인 성공');
+        UserApi.instance.loginWithKakaoAccount();
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
+      } catch (error) {
+        print('카카오계정으로 로그인 실패 $error');
+      }
+    }
+  }
 
   Future<void> signin() async{
     try{
       print('로그인 버튼 클릭');
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      FirebaseAuth.UserCredential userCredential = await FirebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text,
           password: _password.text,
       );
 
-      User user = userCredential.user!;
+      FirebaseAuth.User user = userCredential.user!;
       print('로그인 성공 : ${user.email}');
 
       Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
@@ -175,9 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   margin: const EdgeInsets.only(top: 16),
                   child: OutlinedButton(
                     onPressed: (){
-                      if(_formKey.currentState!.validate()){
-                        signin();
-                      }
+                        signinWithKakao();
                     },
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
