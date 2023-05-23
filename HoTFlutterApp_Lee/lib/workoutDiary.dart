@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp>{
           Expanded(
             flex: 45,
             child: FutureBuilder<QuerySnapshot>(
-              future: FirebaseFirestore.instance.collection('leejuhwan').doc(timeStr).collection('workout').get(),
+              future: FirebaseFirestore.instance.collection('leejuhwan').doc(timeStr).collection('workout').orderBy('time', descending: false).get(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
