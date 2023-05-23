@@ -1,3 +1,4 @@
+import 'package:capstone_project/resetPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './signupPage.dart';
@@ -43,10 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  
-  // void signINto(){
-  //   Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
-  // }
+
 
   Future<void> signin() async{
     try{
@@ -101,9 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     controller: _email,
                     decoration: InputDecoration(
                       labelText: '아이디',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: const TextStyle(color: Colors.white),
                       hintText: '아이디를 입력하세요',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: const BorderSide(
@@ -214,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     TextButton(
                         onPressed: () {
-
+                          Navigator.push(context, MaterialPageRoute(builder: ((context) => ResetPw())));
                         },
                         child: const Text(
                             '아이디/비밀번호 찾기',

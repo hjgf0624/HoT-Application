@@ -50,6 +50,7 @@ dependencies:
   flutterfire_ui: ^0.4.3+20
   google_sign_in: ^5.4.4
   flutter_signin_button: ^2.0.0
+  cloud_firestore: ^4.7.1
 
 dev_dependencies:
   flutter_test:

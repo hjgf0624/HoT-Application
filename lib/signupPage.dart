@@ -1,9 +1,12 @@
+import 'package:capstone_project/FirebaseService.dart';
 import 'package:capstone_project/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './result.dart';
 import 'package:logger/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'FirebaseService.dart' as firebase_service;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -42,6 +45,8 @@ class _SignUpState extends State<SignUp> {
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth 인스턴스 생성
+
+  final FirebaseService firebaseService = FirebaseService(); // FirebaseService (FireStore 인스턴스 생성)
 
   Future<bool> checkEmailDuplication(String email) async { // 회원가입 이메일 중복체크 메소드
     List<String> signInMethods = await _auth.fetchSignInMethodsForEmail(email);
@@ -104,6 +109,17 @@ class _SignUpState extends State<SignUp> {
             .createUserWithEmailAndPassword(
             email: _email.text,
             password: _password.text);
+
+        String userId = userCredential.user!.uid;
+        firebase_service.UserInfo userInfo= firebase_service.UserInfo(
+            email: _email.text,
+            password: _password.text,
+            name: _name.text,
+            phoneNum: _phoneNum.text);
+
+        await FirebaseFirestore.instance.collection('users').doc(userId).set(userInfo.toMap());
+
+
         Navigator.push(context,MaterialPageRoute(builder:((context)=>Result())));
       }
       else print('이메일 중복체크를 하지 않으셨거나 인증번호 확인이 되지 않았습니다.');
@@ -111,6 +127,7 @@ class _SignUpState extends State<SignUp> {
       logger.e('오류 발생: $e', e, stackTrace);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +140,7 @@ class _SignUpState extends State<SignUp> {
               key: _formKey,
               child: Column(
                 children: [
+                  SizedBox(height: size.height*0.03,),
                   const Text(
                     'HoT',
                     textAlign: TextAlign.center,
@@ -147,7 +165,7 @@ class _SignUpState extends State<SignUp> {
                   Stack(
                     children: [
                       FractionallySizedBox(
-                        widthFactor: 0.8,
+                        widthFactor: 0.9,
                         child: TextFormField(
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -188,8 +206,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       if (isEmailChecked && isEmailDuplicated)
                         Positioned(
-                          top: 15,
-                          left: 830,
+                          bottom: -2,
+                          left: 2,
                           child: Container(
                             child: const Text(
                               '중복된 이메일입니다.',
@@ -199,8 +217,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                       if (isEmailChecked && !isEmailDuplicated)
                         Positioned(
-                          top: 15,
-                          left: 810,
+                          bottom: -2,
+                          left: 2,
                           child: Container(
                             child: const Text(
                               '사용 가능한 이메일입니다.',
@@ -211,63 +229,77 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                   SizedBox(height: size.height*0.02,),
-                  TextFormField(
-                    style: const TextStyle(color: Colors.white),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        labelText: '비밀번호',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        hintText: '비밀번호 입력',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                            color:Colors.white,
-                            width: 1,
-                          )
-                        )
-                    ),
-                    controller: _password,
-                    validator: (value) {
-                      if(value==null||value.isEmpty){
-                        return '비밀번호를 입력하세요.';
-                      }
-                    },
+                  Stack(
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 0.9,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              labelText: '비밀번호',
+                              labelStyle: const TextStyle(color: Colors.white),
+                              hintText: '비밀번호 입력',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color:Colors.white,
+                                    width: 1,
+                                  )
+                              )
+                          ),
+                          controller: _password,
+                          validator: (value) {
+                            if(value==null||value.isEmpty){
+                              return '비밀번호를 입력하세요.';
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: size.height*0.02,),
-                  TextFormField(
-                    style: const TextStyle(color: Colors.white),
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        labelText: '비밀번호 확인',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        hintText: '비밀번호 재입력',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        // errorText: passwordMatch ? null : '비밀번호가 일치하지 않습니다',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                            color: Colors.white,
-                            width: 1,
-                          )
-                        )
-                    ),
-                    controller: _passwordConfirm,
-                    validator: (value) {
-                      if(value==null||value.isEmpty){
-                        return '비밀번호를 입력하세요.';
-                      }
-                      if(_password.text.isNotEmpty && value!=_password.text){
-                        setState(() {
-                          passwordMatch = false;
-                        });
-                        return '비밀번호가 일치하지 않습니다.';
-                      } else {
-                        setState(() {
-                          passwordMatch = true;
-                        });
-                      }
-                    },
+                  Stack(
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 0.9,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              labelText: '비밀번호 확인',
+                              labelStyle: const TextStyle(color: Colors.white),
+                              hintText: '비밀번호 재입력',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              // errorText: passwordMatch ? null : '비밀번호가 일치하지 않습니다',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                    width: 1,
+                                  )
+                              )
+                          ),
+                          controller: _passwordConfirm,
+                          validator: (value) {
+                            if(value==null||value.isEmpty){
+                              return '비밀번호를 입력하세요.';
+                            }
+                            if(_password.text.isNotEmpty && value!=_password.text){
+                              setState(() {
+                                passwordMatch = false;
+                              });
+                              return '비밀번호가 일치하지 않습니다.';
+                            } else {
+                              setState(() {
+                                passwordMatch = true;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   // if(passwordMatch)
                   //   const Positioned(
@@ -279,59 +311,69 @@ class _SignUpState extends State<SignUp> {
                   //     ),
                   //   ),
                   SizedBox(height: size.height*0.03,),
-                  TextFormField(
-                    style: const TextStyle(color: Colors.white,),
-                    decoration: InputDecoration(
-                        labelText: '이름',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        hintText: '이름 입력',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color:  Colors.white,
-                              width: 1,
-                              // style: BorderStyle.solid
-                            )
-                        )
-                    ),
-                    controller: _name,
-                    validator: (value) {
-                      if(value==null||value.isEmpty){
-                        return '이름을 입력해 주세요.';
-                      }
-                    },
+                  Stack(
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 0.9,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white,),
+                          decoration: InputDecoration(
+                              labelText: '이름',
+                              labelStyle: const TextStyle(color: Colors.white),
+                              hintText: '이름 입력',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color:  Colors.white,
+                                    width: 1,
+                                    // style: BorderStyle.solid
+                                  )
+                              )
+                          ),
+                          controller: _name,
+                          validator: (value) {
+                            if(value==null||value.isEmpty){
+                              return '이름을 입력해 주세요.';
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: size.height*0.03,),
                   Stack(
                     children: [
-                      TextFormField(
-                        style: const TextStyle(color: Colors.white,),
-                        decoration: InputDecoration(
-                            labelText: '전화번호',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            hintText: '휴대폰 번호 입력. (11자리)',
-                            hintStyle: const TextStyle(color: Colors.white),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: const BorderSide(
-                                  color:  Colors.white,
-                                  width: 1,
-                                  // style: BorderStyle.solid
-                                )
-                            )
+                      FractionallySizedBox(
+                        widthFactor: 0.9,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white,),
+                          decoration: InputDecoration(
+                              labelText: '전화번호',
+                              labelStyle: const TextStyle(color: Colors.white),
+                              hintText: '휴대폰 번호 입력. (11자리)',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color:  Colors.white,
+                                    width: 1,
+                                    // style: BorderStyle.solid
+                                  )
+                              )
+                          ),
+                          controller: _phoneNum,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                            LengthLimitingTextInputFormatter(11),
+                          ],
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if(value==null||value.isEmpty){
+                              return '휴대폰 번호를 입력하세요.';
+                            }
+                          },
                         ),
-                        controller: _phoneNum,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                          LengthLimitingTextInputFormatter(11),
-                        ],
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if(value==null||value.isEmpty){
-                            return '휴대폰 번호를 입력하세요.';
-                          }
-                        },
                       ),
                       Positioned(
                         right: 0,
@@ -358,33 +400,36 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(height: size.height*0.03,),
                   Stack(
                     children: [
-                      TextFormField(
-                        style: const TextStyle(color: Colors.white,),
-                        decoration: InputDecoration(
-                            labelText: '인증번호 확인',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            hintText: '인증번호 입력(6자리)',
-                            hintStyle: const TextStyle(color: Colors.white),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: const BorderSide(
-                                  color:  Colors.white,
-                                  width: 1,
-                                  // style: BorderStyle.solid
-                                )
-                            )
+                      FractionallySizedBox(
+                        widthFactor: 0.9,
+                        child: TextFormField(
+                          style: const TextStyle(color: Colors.white,),
+                          decoration: InputDecoration(
+                              labelText: '인증번호 확인',
+                              labelStyle: const TextStyle(color: Colors.white),
+                              hintText: '인증번호 입력(6자리)',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                    color:  Colors.white,
+                                    width: 1,
+                                    // style: BorderStyle.solid
+                                  )
+                              )
+                          ),
+                          controller: _authNum,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                            LengthLimitingTextInputFormatter(6),
+                          ],
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if(value==null||value.isEmpty){
+                              return '인증번호를 입력해 주세요.';
+                            }
+                          },
                         ),
-                        controller: _authNum,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                          LengthLimitingTextInputFormatter(6),
-                        ],
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if(value==null||value.isEmpty){
-                            return '인증번호를 입력해 주세요.';
-                          }
-                        },
                       ),
                       Positioned(
                         right: 0,
@@ -402,8 +447,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       if(isVerificationSuccessful)
                         const Positioned(
-                          bottom: 0,
-                          left: 0,
+                          bottom: -2,
+                          left: 2,
                           child: Text(
                             '인증번호 확인 완료',
                             style: TextStyle(color: Colors.green),
