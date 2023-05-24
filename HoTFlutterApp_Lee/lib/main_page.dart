@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled2/qr_page.dart';
 import 'package:untitled2/workoutDiary.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -42,7 +41,7 @@ class _BottomNavigationBarExampleState
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     QrGenerate(),
-    MyApp(),
+    workoutDiaryPage(),
     Text(
       'Index 2: School',
       style: optionStyle,

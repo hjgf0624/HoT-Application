@@ -2,15 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:ntp/ntp.dart';
-import 'package:untitled2/main.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled2/videotest.dart';
 import 'firebase_options.dart';
-import 'package:get/get.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,17 +16,17 @@ void main() async{
     MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: MyApp(),
+      home: workoutDiaryPage(),
     )
   );
 }
 
-class MyApp extends StatefulWidget{
+class workoutDiaryPage extends StatefulWidget{
   @override
-  _MyAppState createState() => _MyAppState();
+  _workoutDiaryPageState createState() => _workoutDiaryPageState();
 }
 
-class _MyAppState extends State<MyApp>{
+class _workoutDiaryPageState extends State<workoutDiaryPage>{
   EventList<Event> _markedDateMap = EventList(events: {});
   DateTime time = DateTime.now().add(Duration(hours: 9));
 
