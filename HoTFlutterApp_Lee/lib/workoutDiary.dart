@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:untitled2/UserSingleton.dart';
 import 'package:untitled2/videotest.dart';
 import 'firebase_options.dart';
 
@@ -29,8 +30,7 @@ class workoutDiaryPage extends StatefulWidget{
 class _workoutDiaryPageState extends State<workoutDiaryPage>{
   EventList<Event> _markedDateMap = EventList(events: {});
   DateTime time = DateTime.now().add(Duration(hours: 9));
-
-
+  final UserSingleton _userSingleton = UserSingleton();
   @override
   void initState() {
     super.initState();
@@ -56,7 +56,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
 //컬렉션 안의 모든 문서의 이름 가져오기
   void getAllDocumentNames() async {
     print('start');
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('leejuhwan').get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(_userSingleton.uid).get();
     querySnapshot.docs.forEach((doc) {
       var date = DateFormat('yyyy_MM_dd').parse(doc.id);
       _markedDateMap.add(date, new Event(
@@ -148,7 +148,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
           Expanded(
             flex: 45,
             child: FutureBuilder<QuerySnapshot>(
-              future: FirebaseFirestore.instance.collection('leejuhwan').doc(timeStr).collection('workout').orderBy('time', descending: false).get(),
+              future: FirebaseFirestore.instance.collection(_userSingleton.uid).doc(timeStr).collection('workout').orderBy('time', descending: false).get(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));

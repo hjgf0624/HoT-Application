@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:untitled2/UserSingleton.dart';
 
 class QrGenerate extends StatelessWidget{
-
+  UserSingleton user = UserSingleton();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class QrGenerate extends StatelessWidget{
                   Text('ONE 휘트니스', style: TextStyle(color: Colors.white),),
                   Text('입장 QR 코드', style: TextStyle(color: Colors.white),),
                   QrImageView(
-                    data: "1234567890",
+                    data: user.uid,
                     version: QrVersions.auto,
                     size: 200.0,
                     backgroundColor: Colors.white,

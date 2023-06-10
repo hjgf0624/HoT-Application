@@ -1,3 +1,4 @@
+import 'package:untitled2/UserSingleton.dart';
 import 'package:untitled2/resetPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 import 'package:flutter/material.dart';
@@ -104,6 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
       FirebaseAuth.User user = userCredential.user!;
       print('로그인 성공 : ${user.email}');
+      
+      UserSingleton userInfo = UserSingleton();
+      
+      userInfo.setUserInfo(user.email, user.uid);
 
       Navigator.push(context, MaterialPageRoute(builder: ((context) => BottomNavigationBarExampleApp())));
     } catch(e, stackTrace){
