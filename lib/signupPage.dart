@@ -1,4 +1,5 @@
 import 'package:capstone_project/FirebaseService.dart';
+import 'package:capstone_project/UserBodyProfilePage.dart';
 import 'package:capstone_project/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -481,7 +482,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       OutlinedButton(
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => UserBodyProfileInput()));
                         },
                         style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(

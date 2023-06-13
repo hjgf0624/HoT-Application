@@ -1,3 +1,4 @@
+import 'package:capstone_project/UserBodyProfilePage.dart';
 import 'package:capstone_project/resetPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 import 'package:flutter/material.dart';
@@ -105,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
       FirebaseAuth.User user = userCredential.user!;
       print('로그인 성공 : ${user.email}');
 
-      Navigator.push(context, MaterialPageRoute(builder: ((context) => Result())));
+      Navigator.push(context, MaterialPageRoute(builder: ((context) => UserBodyProfileInput())));
     } catch(e, stackTrace){
       print('예외 발생: $e');
       print('스택 트레이스 : $stackTrace');
