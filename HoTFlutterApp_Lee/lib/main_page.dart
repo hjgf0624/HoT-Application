@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled2/qr_page.dart';
 import 'package:untitled2/workoutDiary.dart';
+import 'package:untitled2/my_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -46,10 +47,7 @@ class _BottomNavigationBarExampleState
       'Index 2: School',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    MyPageScreen(),
   ];
 
   void _onItemTapped(int index) {
