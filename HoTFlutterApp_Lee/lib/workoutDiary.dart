@@ -84,7 +84,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
       daysHaveCircularBorder: null,
       todayButtonColor: Color(0xff181423),
       weekdayTextStyle: TextStyle(
-        color: Color(0xff181423)
+        color: Color(0xffD11507)
       ),
       headerTextStyle: TextStyle(
         color: Color(0xffD9D9D9)
@@ -110,7 +110,16 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
               color: Color(0xffD11507),
             ),
           );
-        } else {
+        } else if(isPrevMonthDay || isNextMonthDay){
+          return Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.grey,
+            ),
+          );
+        }
+        else {
           return Container(
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,

@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:untitled2/UserSingleton.dart';
 
-void main() {
-  runApp(MyApp());
+import 'package:untitled2/UserBodyProfilePage.dart';
+
+
+class MyPageScreen extends StatefulWidget{
+  @override
+  MyPageScreenState createState() => MyPageScreenState();
 }
 
-class MyApp extends StatelessWidget {
+class MyPageScreenState extends State<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MyPage Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyPageScreen(),
-    );
-  }
-}
-
-class MyPageScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+    UserSingleton _userSingleton = UserSingleton();
     Size size=MediaQuery.of(context).size;
+    Map? user_data = _userSingleton.user_data;
+    print("mypage");
     return Scaffold(
       body: Column(
         children: [
@@ -34,7 +29,7 @@ class MyPageScreen extends StatelessWidget {
                   Expanded(
                     flex: 9,
                     child: Text(
-                      '이주환',
+                      user_data?['name'],
                       style: TextStyle(fontSize: 40, color: Colors.white),
                     ),
                   ),
@@ -62,7 +57,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '177', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['height'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'cm', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -80,7 +75,7 @@ class MyPageScreen extends StatelessWidget {
                         Text.rich(
                             TextSpan(
                                 children: <TextSpan>[
-                                  TextSpan(text: '71', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                  TextSpan(text: user_data?['weight'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                   TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                 ]
                             )
@@ -98,7 +93,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '38', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['skeletalMuscleMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -116,7 +111,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '8', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['fatMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -144,7 +139,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '4', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['leftArmMuscleMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -157,7 +152,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '10', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['leftLegMuscleMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -180,7 +175,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '4', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['rightArmMuscleMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -193,7 +188,7 @@ class MyPageScreen extends StatelessWidget {
                             Text.rich(
                                 TextSpan(
                                     children: <TextSpan>[
-                                      TextSpan(text: '10', style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
+                                      TextSpan(text: user_data?['rightLegMuscleMass'].toString(), style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                                       TextSpan(text: 'kg', style: TextStyle(fontSize: 15, color: Color(0xffD11507),))
                                     ]
                                 )
@@ -213,6 +208,13 @@ class MyPageScreen extends StatelessWidget {
             child: Center(
               child: OutlinedButton(
                 onPressed: (){
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => UserBodyProfileInput())
+                  // ).then((value) => setState(() {}));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UserBodyProfileInput())
+                  ).then((value) => setState(() {}));
                 },
                 style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(

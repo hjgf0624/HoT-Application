@@ -1,14 +1,16 @@
 import 'package:untitled2/FirebaseService.dart';
+import 'package:untitled2/UserSingleton.dart';
 import 'package:untitled2/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:untitled2/my_page.dart';
 import './result.dart';
 import 'package:logger/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'FirebaseService.dart' as firebase_service;
 
-CollectionReference _userBodyProfileCollection = FirebaseFirestore.instance.collection('user_body_profile');
+CollectionReference _userBodyProfileCollection = FirebaseFirestore.instance.collection('users');
 
 class UserBodyProfileInput extends StatefulWidget {
   const UserBodyProfileInput({super.key});
@@ -52,28 +54,75 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
   bool isEmailChecked = false;
   bool passwordMatch = true;
 
-
+  late int birthYear;
+  late int birthMonth;
+  late int birthDay;
+  late int height;
+  late int weight;
+  late int skeletalMuscleMass;
+  late int fatMass;
+  late int leftArmMuscleMass;
+  late int rightArmMuscleMass;
+  late int leftLegMuscleMass;
+  late int rightLegMuscleMass;
+  late int torsoMuscleMass;
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth 인스턴스 생성
 
   final FirebaseService firebaseService = FirebaseService(); // FirebaseService (FireStore 인스턴스 생성)
+  
+  final UserSingleton _userSingleton = UserSingleton();
+
+  void getTextData(){
+    birthYear = int.parse(_birthYear.text);
+    birthMonth = int.parse(_birthMonth.text);
+    birthDay = int.parse(_birthDay.text);
+    height = int.parse(_heightController.text);
+    weight = int.parse(_weightController.text);
+    skeletalMuscleMass = int.parse(_skeletalMuscleMass.text);
+    fatMass = int.parse(_fatMass.text);
+    leftArmMuscleMass = int.parse(_leftArmMuscleMass.text);
+    rightArmMuscleMass = int.parse(_rightArmMuscleMass.text);
+    leftLegMuscleMass = int.parse(_leftLegMuscleMass.text);
+    rightLegMuscleMass = int.parse(_rightLegMuscleMass.text);
+    torsoMuscleMass = int.parse(_torsoMuscleMass.text);
+
+    _userSingleton.user_data?.updateAll((key, value) {
+      if (key == 'birthYear') {
+        return birthYear;
+      } else if (key == 'birthMonth') {
+        return birthMonth;
+      } else if (key == 'birthDay') {
+        return birthDay;
+      } else if (key == 'height') {
+        return height;
+      } else if (key == 'weight') {
+        return weight;
+      } else if (key == 'skeletalMuscleMass') {
+        return skeletalMuscleMass;
+      } else if (key == 'fatMass') {
+        return fatMass;
+      } else if (key == 'leftArmMuscleMass') {
+        return leftArmMuscleMass;
+      } else if (key == 'rightArmMuscleMass') {
+        return rightArmMuscleMass;
+      } else if (key == 'leftLegMuscleMass') {
+        return leftLegMuscleMass;
+      } else if (key == 'rightLegMuscleMass') {
+        return rightLegMuscleMass;
+      } else if (key == 'torsoMuscleMass') {
+        return torsoMuscleMass;
+      } else {
+        return value; // 기존 값 유지
+      }
+    });
+
+    print("유저데이터 업데이트 완료");
+  }
 
   Future<void> saveUserBodyProfile() async{
     try{
-      int birthYear = int.parse(_birthYear.text);
-      int birthMonth = int.parse(_birthMonth.text);
-      int birthDay = int.parse(_birthDay.text);
-      int height = int.parse(_heightController.text);
-      int weight = int.parse(_weightController.text);
-      int skeletalMuscleMass = int.parse(_skeletalMuscleMass.text);
-      int fatMass = int.parse(_fatMass.text);
-      int leftArmMuscleMass = int.parse(_leftArmMuscleMass.text);
-      int rightArmMuscleMass = int.parse(_rightArmMuscleMass.text);
-      int leftLegMuscleMass = int.parse(_leftLegMuscleMass.text);
-      int rightLegMuscleMass = int.parse(_rightLegMuscleMass.text);
-      int torsoMuscleMass = int.parse(_torsoMuscleMass.text);
-
-      await _userBodyProfileCollection.add({
+      await _userBodyProfileCollection.doc(_userSingleton.uid).update({
         'birthYear': birthYear,
         'birthMonth': birthMonth,
         'birthDay': birthDay,
@@ -87,6 +136,7 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
         'rightLegMuscleMass': rightLegMuscleMass,
         'torsoMuscleMass': torsoMuscleMass,
       });
+
       print('사용자 신체 정보가 Firestore에 저장되었습니다.');
     }catch(e){
       print('사용자 신체 정보 저장 중 오류 발생: $e');
@@ -496,8 +546,11 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
                     children: [
                       OutlinedButton(
                         onPressed: (){
+                          getTextData();
                           saveUserBodyProfile();
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Result()));
+                          setState(() {
+                            Navigator.pop(context);
+                          });
                         },
                         style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(

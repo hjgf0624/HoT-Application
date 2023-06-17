@@ -7,11 +7,11 @@ class UserSingleton {
     return _instance;
   }
 
-  late String? email;
   late String uid;
+  late Map? user_data;
 
-  void setUserInfo(String? newEmail, String newUid) {
-    email = newEmail;
-    uid = newUid;
+  void setUserInfo(String uid, Map<String, dynamic>? user_data) {
+    this.uid = uid;
+    this.user_data = user_data;
   }
 }

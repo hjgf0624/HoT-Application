@@ -115,7 +115,20 @@ class _SignUpState extends State<SignUp> {
         firebase_service.UserInfo userInfo= firebase_service.UserInfo(
             email: _email.text,
             name: _name.text,
-            phoneNum: _phoneNum.text);
+            phoneNum: _phoneNum.text,
+            birthYear: 0,
+          birthMonth: 0,
+          birthDay: 0,
+          height: 0,
+          weight: 0,
+          skeletalMuscleMass: 0,
+          fatMass: 0,
+          leftArmMuscleMass: 0,
+          rightArmMuscleMass: 0,
+          leftLegMuscleMass: 0,
+          rightLegMuscleMass: 0,
+          torsoMuscleMass: 0
+        );
 
         await FirebaseFirestore.instance.collection('users').doc(userId).set(userInfo.toMap());
 

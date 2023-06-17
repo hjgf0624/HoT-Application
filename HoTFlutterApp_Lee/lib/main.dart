@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untitled2/UserSingleton.dart';
 import 'package:untitled2/resetPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
@@ -107,8 +108,25 @@ class _MyHomePageState extends State<MyHomePage> {
       print('로그인 성공 : ${user.email}');
       
       UserSingleton userInfo = UserSingleton();
-      
-      userInfo.setUserInfo(user.email, user.uid);
+
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      try {
+        // 'users' 컬렉션에서 특정 문서 가져오기
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await firestore.collection('users').doc(user.uid).get();
+
+        // 문서가 존재하는 경우
+        if (snapshot.exists) {
+          // 유저 정보 출력 (예시: 'name' 필드)
+          print('유저 이름: ${snapshot.data()?['name']}');
+          userInfo.setUserInfo(user.uid, snapshot.data());
+        } else {
+          print('해당 문서를 찾을 수 없습니다.');
+        }
+      } catch (e) {
+        print('Firestore에서 데이터를 가져오는 중 오류가 발생했습니다: $e');
+      }
 
       Navigator.push(context, MaterialPageRoute(builder: ((context) => BottomNavigationBarExampleApp())));
     } catch(e, stackTrace){
