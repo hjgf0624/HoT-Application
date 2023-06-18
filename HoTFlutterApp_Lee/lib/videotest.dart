@@ -49,8 +49,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Player'),
+        title: Text(
+          '운동 영상',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff181423),
       ),
+
       body: Center(
         child: Chewie(
           controller: _chewieController,

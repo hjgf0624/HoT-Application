@@ -142,7 +142,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
     );
 
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 30.0),
+        padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 20),
       child: Column(
         children: <Widget>[
           const Expanded(

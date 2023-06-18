@@ -17,7 +17,10 @@ class MyPageScreenState extends State<MyPageScreen> {
     Map? user_data = _userSingleton.user_data;
     print("mypage");
     return Scaffold(
-      body: Column(
+      body: Container(
+        padding: EdgeInsets.only(top: 20),
+        child:
+      Column(
         children: [
           Expanded(
             flex: 1,
@@ -234,6 +237,6 @@ class MyPageScreenState extends State<MyPageScreen> {
           )
         ],
       ),
-    );
+    ));
   }
 }

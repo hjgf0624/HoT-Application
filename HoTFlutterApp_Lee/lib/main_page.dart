@@ -21,6 +21,7 @@ class BottomNavigationBarExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: Color(0xff181423)),
       home: BottomNavigationBarExample(),
     );
@@ -35,8 +36,7 @@ class BottomNavigationBarExample extends StatefulWidget {
       _BottomNavigationBarExampleState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
