@@ -126,6 +126,12 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
               borderRadius: BorderRadius.circular(10.0),
               color: Color(0xffD9D9D9),
             ),
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(5),
+            child: Text(
+              day.day.toString(),
+              style: TextStyle(fontSize: 10, color: Colors.black),
+            )
           );
         }
       },
@@ -179,7 +185,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
                       onTap: (){
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(videoUrl: 'http://10.0.2.2:8000/video/${videoID}',))
+                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(videoUrl: 'http://210.117.175.127:10060/video/${videoID}',))
                         );
                       },
                         child: Container(
@@ -195,7 +201,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
                                   flex: 30,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.asset('assets/images/pushup.jpg', width: 100, height: 100,),
+                                    child: Image.asset('assets/images/$workoutName.jpg', width: 100, height: 100,),
                                   )),
                               Expanded(
                                   flex: 70,
