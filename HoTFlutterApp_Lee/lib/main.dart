@@ -99,27 +99,27 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> signin() async{
     try{
       print('로그인 버튼 클릭');
+
+      //firebaseauth을 통해 로그인 시도
       FirebaseAuth.UserCredential userCredential = await FirebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text,
           password: _password.text,
       );
 
       FirebaseAuth.User user = userCredential.user!;
-      print('로그인 성공 : ${user.email}');
-      
-      UserSingleton userInfo = UserSingleton();
 
+      //로그인 성공 시 user정보 저장
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+      UserSingleton userInfo = UserSingleton();
       try {
-        // 'users' 컬렉션에서 특정 문서 가져오기
+        // 'users' 컬렉션에 저장된 user 정보 가져오기
         DocumentSnapshot<Map<String, dynamic>> snapshot =
         await firestore.collection('users').doc(user.uid).get();
 
         // 문서가 존재하는 경우
         if (snapshot.exists) {
-          // 유저 정보 출력 (예시: 'name' 필드)
-          print('유저 이름: ${snapshot.data()?['name']}');
+
           userInfo.setUserInfo(user.uid, snapshot.data());
         } else {
           print('해당 문서를 찾을 수 없습니다.');

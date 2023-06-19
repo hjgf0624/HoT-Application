@@ -14,8 +14,10 @@ class MyPageScreenState extends State<MyPageScreen> {
   Widget build(BuildContext context) {
     UserSingleton _userSingleton = UserSingleton();
     Size size=MediaQuery.of(context).size;
+
+    //UserSingleton에 저장된 유저 데이터 가져오기
     Map? user_data = _userSingleton.user_data;
-    print("mypage");
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 20),
@@ -211,9 +213,7 @@ class MyPageScreenState extends State<MyPageScreen> {
             child: Center(
               child: OutlinedButton(
                 onPressed: (){
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => UserBodyProfileInput())
-                  // ).then((value) => setState(() {}));
+                  //신체 데이터 수정 화면으로 전환
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => UserBodyProfileInput())

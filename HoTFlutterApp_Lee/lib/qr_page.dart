@@ -26,6 +26,7 @@ class QrGenerate extends StatelessWidget{
                   Text('ONE 휘트니스', style: TextStyle(color: Colors.white),),
                   Text('입장 QR 코드', style: TextStyle(color: Colors.white),),
                   QrImageView(
+                    //사용자의 uid를 data로 QR Code 생성
                     data: user.uid,
                     version: QrVersions.auto,
                     size: 200.0,

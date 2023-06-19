@@ -87,6 +87,7 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
     rightLegMuscleMass = int.parse(_rightLegMuscleMass.text);
     torsoMuscleMass = int.parse(_torsoMuscleMass.text);
 
+    //UserSingleton값 갱신
     _userSingleton.user_data?.updateAll((key, value) {
       if (key == 'birthYear') {
         return birthYear;
@@ -116,10 +117,10 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
         return value; // 기존 값 유지
       }
     });
-
     print("유저데이터 업데이트 완료");
   }
 
+  //FireStore Database의 사용자 데이터 갱신
   Future<void> saveUserBodyProfile() async{
     try{
       await _userBodyProfileCollection.doc(_userSingleton.uid).update({
@@ -568,7 +569,7 @@ class _UserBodyprofileInputState extends State<UserBodyProfileInput> {
                       ),
                       OutlinedButton(
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Result()));
+                          Navigator.pop(context);
                         },
                         style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(

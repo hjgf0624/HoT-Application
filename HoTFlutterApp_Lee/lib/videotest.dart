@@ -32,14 +32,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   void _initializeVideoPlayer() {
-    videoPlayerController =
-    VideoPlayerController.network(widget.videoUrl);
+    //VideoPlayerController 초기화
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl);
 
     // ChewieController를 초기화합니다.
     _chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       autoPlay: true,
-      looping: true,
+      looping: false,
       // 다른 ChewieController 설정들을 추가할 수 있습니다.
       // 자세한 설정들은 Chewie 패키지 문서를 참조하세요.
     );
@@ -57,6 +57,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
 
       body: Center(
+        //화면에 Chewie Widget 출력
         child: Chewie(
           controller: _chewieController,
         ),

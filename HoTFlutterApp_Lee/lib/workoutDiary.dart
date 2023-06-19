@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -7,11 +12,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled2/UserSingleton.dart';
 import 'package:untitled2/videotest.dart';
 import 'firebase_options.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FlutterDownloader.initialize(
+      debug: true
   );
   runApp(
     MaterialApp(
@@ -31,12 +41,11 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
   EventList<Event> _markedDateMap = EventList(events: {});
   DateTime time = DateTime.now().add(Duration(hours: 9));
   final UserSingleton _userSingleton = UserSingleton();
+
   @override
   void initState() {
     super.initState();
-
     getAllDocumentNames();
-
   }
 
   static Widget _absentIcon(String day) => Container(
@@ -55,8 +64,10 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
 
 //컬렉션 안의 모든 문서의 이름 가져오기
   void getAllDocumentNames() async {
-    print('start');
+    //유저 uid 경로에 저장되어 있는 운동 정보 가져오기
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(_userSingleton.uid).get();
+
+    //운동을 진행한 날짜를 _markedDateMap에 추가
     querySnapshot.docs.forEach((doc) {
       var date = DateFormat('yyyy_MM_dd').parse(doc.id);
       _markedDateMap.add(date, new Event(
@@ -65,6 +76,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
         icon: _absentIcon(date.day.toString())
       ));
     });
+    //화면 갱신을 위한 setState
     setState(() {
     });
   }
@@ -181,11 +193,12 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
                     final workoutName = data['workoutName'] ?? '';
                     final count = data['count'] ?? '';
                     final videoID = data['videoID'] ?? '';
+                    final uploadTime = data['time'] ?? '';
                     return GestureDetector(
                       onTap: (){
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(videoUrl: 'http://210.117.175.127:10060/video/${videoID}',))
+                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(videoUrl: 'http://210.117.175.127:10060/video/$videoID',))
                         );
                       },
                         child: Container(
@@ -223,7 +236,7 @@ class _workoutDiaryPageState extends State<workoutDiaryPage>{
                                       ],
                                     ),
                                   )
-                              )
+                              ),
                             ],
                           )
                         )
