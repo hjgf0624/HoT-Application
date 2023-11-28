@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
 
       FirebaseAuth.User user = userCredential.user!;
+      print("로그인 성공 : ${user.email}");
 
       //로그인 성공 시 user정보 저장
       FirebaseFirestore firestore = FirebaseFirestore.instance;
